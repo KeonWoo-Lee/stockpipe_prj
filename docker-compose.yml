@@ -1,0 +1,44 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: stockpipe
+      POSTGRES_PASSWORD: stockpipe
+      POSTGRES_DB: stockpipe
+    ports:
+      - "5432:5432"
+    volumes:
+      - /home/lkw/data/pg_data:/var/lib/postgresql/data
+      - ./script/init_db.sql:/docker-entrypoint-initdb.d/init.sql
+
+  grafana:
+    image: grafana/grafana:11.0.0
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - /home/lkw/data/grafana:/var/lib/grafana
+
+  airflow:
+    build: .
+    environment:
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: sqlite:////opt/airflow/airflow.db
+      AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+      AIRFLOW__WEBSERVER__SECRET_KEY: stockpipe-secret
+      STOCKPIPE_DB_HOST: postgres
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - /home/lkw/data/airflow:/opt/airflow/logs
+      - ./dbt:/opt/airflow/dbt
+    depends_on:
+      - postgres
+    command: >
+      bash -c "
+        airflow db migrate &&
+        airflow users create --username admin --password admin --firstname admin --lastname admin --role Admin --email admin@example.com || true &&
+        airflow standalone
+      "
