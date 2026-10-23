@@ -1,0 +1,12 @@
+stockpipe:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: "{{ env_var('STOCKPIPE_DB_HOST', 'localhost') }}"
+      port: 5432
+      user: stockpipe
+      password: stockpipe
+      dbname: stockpipe
+      schema: public
+      threads: 1
