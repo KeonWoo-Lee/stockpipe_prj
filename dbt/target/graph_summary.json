@@ -1,1 +1,0 @@
-{"_invocation_id": "0352e5cc-4f6a-4673-acc9-f73a2cc32bc6", "linked": {"0": {"name": "model.stockpipe.mart_price_sma", "type": "model"}, "1": {"name": "model.stockpipe.stg_daily_prices", "type": "model", "succ": [0, 2]}, "2": {"name": "model.stockpipe.mart_stock_summary", "type": "model"}}}
