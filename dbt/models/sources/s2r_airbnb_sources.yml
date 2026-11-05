@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: s2r_airbnb
+    schema: public
+    tables:
+      - name: s2r_root
+      - name: s2r_reviews
+      - name: s2r_amenities
+      - name: s2r_host_host_verifications
+      - name: s2r_address_location_coordinates
+
