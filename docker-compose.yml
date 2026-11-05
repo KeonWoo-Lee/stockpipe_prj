@@ -11,6 +11,17 @@ services:
       - /home/lkw/data/pg_data:/var/lib/postgresql/data
       - ./script/init_db.sql:/docker-entrypoint-initdb.d/init.sql
 
+  mongo:
+    image: mongo:8.0.32
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+    volumes:
+      - /home/lkw/data/mongo:/data/db
+
   grafana:
     image: grafana/grafana:11.0.0
     ports:
