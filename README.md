@@ -1,16 +1,12 @@
-# StockPipe
+# 파이프라인
 
-StockPipe는 한국 주식 데이터를 수집하고 가공하는 개인 데이터 파이프라인 프로젝트입니다. 기존 주식 데이터 흐름에 더해, MongoDB의 중첩 문서를 Spark로 평탄화하고 PostgreSQL과 dbt로 전달하는 설정 기반 배치 파이프라인을 개발하고 있습니다.
-
-## 파이프라인
-
-### 주식 데이터
+## 주식 데이터
 
 ```text
 pykrx → PostgreSQL 원천 테이블 → PySpark 지표 계산 → dbt 모델 → Grafana
 ```
 
-### MongoDB 반정형 데이터
+## MongoDB 반정형 데이터
 
 ```text
 MongoDB collection
