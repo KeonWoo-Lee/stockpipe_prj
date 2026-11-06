@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 name = "stockpipe"
 version = "0.1.0"
 requires-python = ">=3.12"
-dependencies = ["pykrx", "psycopg[binary]", "sqlalchemy", "click", "pydantic", "pydantic-settings", "httpx",]
+dependencies = ["pykrx", "psycopg[binary]", "sqlalchemy", "click", "pydantic", "pydantic-settings", "httpx", "pyyaml",]
 
 [project.optional-dependencies]
 dev = ["pytest", "pytest-cov", "pytest-mock", "ruff", "mypy"]
