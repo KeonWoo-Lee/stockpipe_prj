@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: s2r_airbnb
-    schema: public
+    schema: "{{ env_var(\"S2R_FDW_SCHEMA\", \"s2r_landing_fdw\") }}"
     tables:
       - name: s2r_root
       - name: s2r_reviews

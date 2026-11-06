@@ -39,12 +39,29 @@ services:
       AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
       AIRFLOW__WEBSERVER__SECRET_KEY: stockpipe-secret
       STOCKPIPE_DB_HOST: postgres
+      S2R_MONGO_URI: ${S2R_MONGO_URI:-}
+      S2R_PG1_HOST: ${S2R_PG1_HOST:-postgres}
+      S2R_PG1_PORT: ${S2R_PG1_PORT:-5432}
+      S2R_PG1_DATABASE: ${S2R_PG1_DATABASE:-s2r}
+      S2R_PG1_USER: ${S2R_PG1_USER:-stockpipe}
+      S2R_PG1_PASSWORD: ${S2R_PG1_PASSWORD:-}
+      S2R_PG1_READ_USER: ${S2R_PG1_READ_USER:-stockpipe}
+      S2R_PG1_READ_PASSWORD: ${S2R_PG1_READ_PASSWORD:-}
+      S2R_PG2_HOST: ${S2R_PG2_HOST:-postgres}
+      S2R_PG2_PORT: ${S2R_PG2_PORT:-5432}
+      S2R_PG2_DATABASE: ${S2R_PG2_DATABASE:-stockpipe}
+      S2R_PG2_USER: ${S2R_PG2_USER:-stockpipe}
+      S2R_PG2_PASSWORD: ${S2R_PG2_PASSWORD:-}
+      S2R_PG2_ADMIN_USER: ${S2R_PG2_ADMIN_USER:-stockpipe}
+      S2R_PG2_ADMIN_PASSWORD: ${S2R_PG2_ADMIN_PASSWORD:-}
+      S2R_FDW_PG1_HOST: ${S2R_FDW_PG1_HOST:-postgres}
     ports:
       - "8080:8080"
     volumes:
       - ./dags:/opt/airflow/dags
       - /home/lkw/data/airflow:/opt/airflow/logs
       - ./dbt:/opt/airflow/dbt
+      - ./pipeline.yml:/opt/airflow/pipeline.yml:ro
     depends_on:
       - postgres
     command: >
