@@ -1,0 +1,63 @@
+version: 1
+
+pipeline:
+  name: s2r_airbnb
+
+source:
+  type: mongodb
+  mongodb:
+    # URI contains credentials only through an environment-variable reference.
+    uri: ${S2R_MONGO_URI}
+    database: sample_airbnb
+    collection: listingsAndReviews
+    filter: {}
+    schema_inference:
+      sample_size: 1000
+      # Optional Mongo Spark Connector schemaHints. Accepts DDL text or JSON schema fragment.
+      schema_hints: null
+
+flatten:
+  object_policy: flatten
+  array_policy: child_table
+  map_policy: json_string
+  table_prefix: s2r
+
+postgres_landing:
+  host: ${S2R_PG1_HOST}
+  port: ${S2R_PG1_PORT}
+  database: ${S2R_PG1_DATABASE}
+  user: ${S2R_PG1_USER}
+  password: ${S2R_PG1_PASSWORD}
+  schema: public
+  write_mode: overwrite
+  jdbc_driver_jar: spark/postgresql-42.7.3.jar
+
+postgres_analytics:
+  host: ${S2R_PG2_HOST}
+  port: ${S2R_PG2_PORT}
+  database: ${S2R_PG2_DATABASE}
+  user: ${S2R_PG2_USER}
+  password: ${S2R_PG2_PASSWORD}
+  schema: analytics
+
+postgres_fdw:
+  # This hostname is resolved by the PG2 server, not by the Spark runner.
+  host: ${S2R_FDW_PG1_HOST}
+  port: ${S2R_PG1_PORT}
+  database: ${S2R_PG1_DATABASE}
+  remote_schema: public
+  local_schema: s2r_landing_fdw
+  server_name: s2r_landing_server
+  admin_user: ${S2R_PG2_ADMIN_USER}
+  admin_password: ${S2R_PG2_ADMIN_PASSWORD}
+  dbt_user: ${S2R_PG2_USER}
+  remote_user: ${S2R_PG1_READ_USER}
+  remote_password: ${S2R_PG1_READ_PASSWORD}
+
+dbt:
+  project_dir: dbt
+  profile_name: stockpipe
+  selector: tag:s2r_airbnb
+  threads: 4
+  run_tests: true
+  vars: {}
