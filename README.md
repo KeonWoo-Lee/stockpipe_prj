@@ -1,12 +1,12 @@
 # 파이프라인
 
-## 주식 데이터
+## 0.1.0 ~ 0.2.0 주식 데이터 전용 데이터 파이프라인
 
 ```text
 pykrx → PostgreSQL 원천 테이블 → PySpark 지표 계산 → dbt 모델 → Grafana
 ```
 
-## MongoDB 반정형 데이터
+## 0.3.0 MongoDB 반정형 데이터 기반 데이터 파이프라인
 
 ```text
 MongoDB collection
@@ -95,12 +95,6 @@ docker compose exec airflow \
 | `dbt/models/sources/s2r_airbnb_sources.yml` | PG2의 FDW landing schema를 dbt source로 정의 |
 | `docker-compose.yml` | 서비스 구성, pipeline 설정 마운트, 환경변수 전달 |
 | `Dockerfile` | Airflow 실행 이미지에 Java 및 프로젝트 의존성 설치 |
-
-## 기존 주식 지표
-
-- SMA 5/20/60: 5일, 20일, 60일 단순 이동평균
-- RSI 14: 14일 상대강도지수
-- RSI 70 초과는 과매수 참고 구간, 30 미만은 과매도 참고 구간으로 시각화합니다.
 
 ## 프로젝트 환경
 
